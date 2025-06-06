@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Multi-Step Code Check</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f2f2f2;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        .result {
+            margin-top: 10px;
+            display: none;
+        }
+
+        .copy-btn {
+            margin-top: 5px;
+            background-color: #28a745;
+        }
+
+        #finalCheck {
+            display: none;
+            background-color: #ff8800;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="container" id="mainContainer">
+        <div class="section">
+            <label>00110001 00101111 00110000 00111101 00111111:</label>
+            <input type="text" id="input1">
+            <button onclick="checkInput(1)">ตรวจสอบ</button>
+            <div class="result" id="result1">
+                01101000 01110100 01110100 01110000 01110011 00111010 00101111 00101111 01100100 01110010 01101001
+                01110110 01100101
+                00101110 01100111 01101111 01101111 01100111 01101100 01100101 00101110 01100011 01101111 01101101
+                00101111 01100110
+                01101001 01101100 01100101 00101111 01100100 00101111 00110001 01100011 01101011 00110011 01110110
+                01100100 00110110
+                01000111 01001010 01110101 01011010 00110001 01011010 01010001 01010001 01100011 01101110 01100010
+                01001111 00110010
+                01010010 01110100 01000100 01000001 01010110 01100101 01110110 01101111 01001110 01001111 00101101
+                01110111 01001001
+                00101111 01110110 01101001 01100101 01110111
+                <button class="copy-btn" onclick="copyText('NI')">คัดลอก</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <label>ดูชื่อดีๆ</label>
+            <input type="text" id="input2">
+            <button onclick="checkInput(2)">ตรวจสอบ</button>
+            <div class="result" id="result2">
+                01101000 01110100 01110100 01110000 01110011 00111010 00101111 00101111 01100100 01110010 01101001
+                01110110 01100101
+                00101110 01100111 01101111 01101111 01100111 01101100 01100101 00101110 01100011 01101111 01101101
+                00101111 01100110
+                01101001 01101100 01100101 00101111 01100100 00101111 00110001 00111001 01000001 01100100 01001110
+                01001001 01000110
+                00110100 01100001 01010101 01101001 01010101 01111010 01010011 01000011 01111000 01101010 01001010
+                01010110 01111001
+                01111010 01000001 01000100 01001011 01001010 01111010 01011000 01010010 00101101 01001010 01110110
+                01010110 01000100
+                00101111 01110110 01101001 01100101 01110111
+                <button class="copy-btn" onclick="copyText('Hehe')">คัดลอก</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <label>เหมือนกันนั้นแหละ</label>
+            <input type="text" id="input3">
+            <button onclick="checkInput(3)">ตรวจสอบ</button>
+            <div class="result" id="result3">
+                01101000 01110100 01110100 01110000 01110011 00111010 00101111 00101111 01100100 01110010 01101001
+                01110110 01100101
+                00101110 01100111 01101111 01101111 01100111 01101100 01100101 00101110 01100011 01101111 01101101
+                00101111 01100110
+                01101001 01101100 01100101 00101111 01100100 00101111 00110001 01011001 01011111 01011111 01100001
+                01010001 00110001
+                01110011 00110010 00110111 01110000 01001010 01011010 01000010 01110001 01010011 01000100 01001011
+                01001011 01001001
+                00110100 01110111 01001110 01111001 01010110 01001110 01100011 01001101 01101111 01010100 01001011
+                01111010 01101111
+                00101111 01110110 01101001 01100101 01110111
+                <button class="copy-btn" onclick="copyText('Nope')">คัดลอก</button>
+            </div>
+        </div>
+
+        <button id="finalCheck" onclick="goToFinalStep()">เตรียม</button>
+    </div>
+
+    <script>
+        const correctCodes = ["ไม่นิยาม", "VeryEz", "GG"];
+        const status = [false, false, false];
+
+        function checkInput(num) {
+            const input = document.getElementById(`input${num}`).value.trim();
+            if (input === correctCodes[num - 1]) {
+                alert(`ส่วนที่ ${num} ถูกต้อง`);
+                status[num - 1] = true;
+                document.getElementById(`result${num}`).style.display = 'block';
+                checkAllDone();
+            } else {
+                alert("ไม่ถูกต้อง ลองใหม่");
+            }
+        }
+
+        function checkAllDone() {
+            if (status.every(Boolean)) {
+                document.getElementById("finalCheck").style.display = "block";
+            }
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("คัดลอกแล้ว");
+            });
+        }
+
+        function goToFinalStep() {
+            document.body.innerHTML = `
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh">
+          <input type="text" id="finalInput" placeholder="กรอกข้อความขั้นสุดท้าย" style="padding:10px;border-radius:8px;width:80%;max-width:400px">
+          <button onclick="finalCheck()" style="margin-top:10px;padding:10px 20px;border:none;border-radius:8px;background-color:#28a745;color:white">ตรวจสอบ</button>
+        </div>
+      `;
+        }
+        function showVideo(){
+            document.body.innerHTML = `
+          <video autoplay controls style="width:100vw;height:100vh;object-fit:cover">
+            <source src="rick.mp4" type="video/mp4">
+            ไม่สามารถเล่นวิดีโอได้
+          </video>
+        `;
+        }
+
+        function finalCheck() {
+            const input = document.getElementById("finalInput").value.trim();
+            if (input === "Say") {
+                document.body.innerHTML = `01101000 01110100 01110100 01110000 01110011 00111010 00101111 00101111 01100100 01110010 01101001 01110110 01100101 00101110 01100111 01101111 01101111 01100111 01101100 01100101 00101110 01100011 01101111 01101101 00101111 01100110 01101001 01101100 01100101 00101111 01100100 00101111 00110001 01010111 01000011 01001110 01010010 00111000 01110000 01101000 01001010 01101110 01100010 01101110 01100101 01110111 01101011 01000011 01101000 01101110 01101001 01100001 01001010 01101101 01101101 01001111 01100110 01000100 01010110 01010000 01001100 01101010 01010001 01010111 01101111 00101111 01110110 01101001 01100101 01110111`;
+                setTimeout(showVideo,5000);
+        
+            } else {
+                alert("รหัสไม่ถูกต้อง");
+            }
+        }
+    </script>
+
+</body>
+
+</html>
